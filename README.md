@@ -1,3 +1,3 @@
 # vturtle
 Turtle Graphics with LibVGL
-![Image](https://github.com/user-attachments/assets/eefff65c-4e56-464f-ade6-3d5c9cd1d43a)
+![Image](https://github.com/user-attachments/assets/00bf1a3d-4d62-4728-89bf-b01c4c73db7f)
