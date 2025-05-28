@@ -249,9 +249,12 @@ class Turtle:
         self._pendown = True
         self._pencolor = vgl.BLACK
         self._pensize = 0.001  # Default line thickness
-        self._fillcolor = vgl.WHITE
+        #self._fillcolor = vgl.WHITE
+        self._fillcolor = None
         self._filling = False
         self._fill_coords = [] # Stores coordinates for begin_fill/end_fill
+        self._poly = False
+        self._poly_coords = []
 
         # Initialize the graphics context (if necessary for libvgl)
         # For libvgl, we generally draw directly to the device.
@@ -358,13 +361,17 @@ class Turtle:
 
     def _move_to(self, new_x, new_y):
         """Internal method to move the turtle and draw if pen is down."""
-        if self._pendown:
+        if self._pendown and not self._filling and not self._poly:
             self._dev.line(self._x, self._y, new_x, new_y,
                           lcol=self._pencolor, lthk=self._pensize)
         self._x = new_x
         self._y = new_y
+        
         if self._filling:
             self._fill_coords.append((new_x, new_y))
+
+        if self._poly:
+            self._poly_coords.append((new_x, new_y))
 
     # symid : string ex: 
     # circle'        : 'o'
@@ -381,12 +388,46 @@ class Turtle:
     # hexgram'       : '*6'
     # plus'          : '+'
     # cross'         : 'x'
-    def symbol(self, sid='o', size=0.02, deg=0):
+    def get_color(c):
+        if isinstance(c, str):
+            _c = turtle_colors[c]
+            if _c is not None:
+                return _c
+            else:
+                _c = vgl.default_color[args[0].lower()]
+                if _c is not None:
+                    return _c
+                else:
+                    print("Error: invalid color. Back color returns")
+                    return vgl.BLACK
+        elif isinstance(c, vgl.Color):
+            return c
+        elif isinstance(c, tuple):
+            return vgl.Color(c[0],c[1],c[2])
+        else:
+            print("Error: invalid color. Back color returns")
+            return vgl.BLACK
+            
+    def symbol(self, sid='o', size=0.02, deg=0, lcol=None, lthk=None, fcol=None):
+        _p_col = self._pencolor
+        _p_thk = self._pensize
+        _f_col = self._fillcolor
+        _l_pat = vgl.linepat._PAT_SOLID
+        
+        if lcol is not None:
+            _p_col = self.get_color(lcol)
+            
+        if fcol is not None:
+            _f_col = self.get_color(fcol)
+            
+        if lthk is not None:
+            _p_thk = float(lthk)
+            
         self._dev.symbol(self._x, self._y, sid, size, deg, 
-                         self._pencolor, 
-                         self._pensize, 
-                         lpat=vgl.linepat._PAT_SOLID, 
-                         fcol=self._fillcolor)
+                         _p_col, 
+                         _p_thk, 
+                         _l_pat, 
+                         _f_col)
     sym = symbol
     
     def forward(self, distance):
@@ -630,6 +671,28 @@ class Turtle:
         else:
             print("Invalid color argument. Please use an RGB tuple or a recognized color name.")
 
+    def begin_poly(self):
+        self._poly = True
+        self._poly_coords = [(self._x, self._y)] # Start with current position
+        
+    def end_poly(self):
+        """Fill the shape drawn since the last call to begin_fill."""
+        if self._poly and self._poly_coords:
+            # Add the current position to close the shape if it's not already closed
+            if self._poly_coords[-1] != (self._x, self._y):
+                self._poly_coords.append((self._x, self._y))
+
+            # Ensure the shape is explicitly closed for polygon filling
+            if self._poly_coords[0] != self._poly_coords[-1]:
+                self._poly_coords.append(self._poly_coords[0])
+
+            x_coords = [p[0] for p in self._poly_coords]
+            y_coords = [p[1] for p in self._poly_coords]
+            self._dev.polyline(x_coords, y_coords,
+                             lcol=self._pencolor, lthk=self._pensize)
+        self._poly = False
+        self._poly_coords = []
+        
     def begin_fill(self):
         """Call this just before drawing the shape to be filled."""
         self._filling = True
@@ -637,7 +700,8 @@ class Turtle:
 
     def end_fill(self):
         """Fill the shape drawn since the last call to begin_fill."""
-        if self._filling and self._fill_coords and self._fillcolor:
+        #if (self._filling and self._fill_coords) or self._fillcolor:
+        if self._filling and self._fill_coords:
             # Add the current position to close the shape if it's not already closed
             if self._fill_coords[-1] != (self._x, self._y):
                 self._fill_coords.append((self._x, self._y))
@@ -723,6 +787,8 @@ seth        = _default_turtle.seth
 fillcolor   = _default_turtle.fillcolor
 begin_fill  = _default_turtle.begin_fill
 end_fill    = _default_turtle.end_fill
+begin_poly  = _default_turtle.begin_poly
+end_poly    = _default_turtle.end_poly
 screen_size = _default_turtle.screen_size
 subplot     = _default_turtle.subplot
 
