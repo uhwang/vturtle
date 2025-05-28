@@ -249,7 +249,7 @@ class Turtle:
         self._pendown = True
         self._pencolor = vgl.BLACK
         self._pensize = 0.001  # Default line thickness
-        self._fillcolor = None
+        self._fillcolor = vgl.WHITE
         self._filling = False
         self._fill_coords = [] # Stores coordinates for begin_fill/end_fill
 
@@ -350,6 +350,8 @@ class Turtle:
         else:
             print("Error: invalid device")
             return
+            
+        self._dev.set_device(self._frames[0])
 
     def _degrees_to_radians(self, degrees):
         return math.radians(degrees)
@@ -392,6 +394,7 @@ class Turtle:
         angle_rad = self._degrees_to_radians(self._heading)
         new_x = self._x + distance * math.cos(angle_rad)
         new_y = self._y + distance * math.sin(angle_rad)
+        
         self._move_to(new_x, new_y)
 
     fd = forward
