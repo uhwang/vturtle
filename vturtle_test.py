@@ -90,7 +90,6 @@ def star_fractal(x,y,length,penc,fillc,n):
 star_fractal(0,0,200,'black','blue',3)    
 
 subplot(4,2,6)
-
 def fixed_tree(order, length, angle):
     global c_table
     if order > 0:
@@ -112,7 +111,7 @@ def fixed_tree(order, length, angle):
         fd(-length)
         pd()
         
-def draw():
+def draw_fixed_tree():
     global c_table
     order = 10
     length = 100
@@ -120,27 +119,27 @@ def draw():
     teleport(0,-200)
     left(90)
     fixed_tree(order, length, 0)
-
-draw()   
+draw_fixed_tree()   
 
 subplot(4,2,7)
-def draw_fractal_polygon(nvert, edge, level):
+def fractal_pentaline(nvert, edge, level):
     if level > 0:
         ddeg = 360/nvert
         for _ in range(nvert):
             pencolor(colors[level%6])
             pensize(0.001*edge/4)
             fd(edge)
-            draw_fractal_polygon(nvert, edge*0.5, level-1)
+            fractal_pentaline(nvert, edge*0.5, level-1)
+            pu()
             bk(edge)
+            pd()
             right(ddeg)
         
-def fractal_polygon():
+def draw_fractal_pentaline():
     level =4
     left(90)
-    draw_fractal_polygon(5, 130, level)
-
-fractal_polygon()  
+    fractal_pentaline(5, 130, level)
+draw_fractal_pentaline()  
 
 subplot(4,2,8)
 def draw_hexgram_fractal(nvert, edge, level, dist):
@@ -162,5 +161,4 @@ def hexagram_fractal():
     teleport(0,dist)
     left(60)
     draw_hexgram_fractal(6, edge, 1, dist)
-
 hexagram_fractal()  
