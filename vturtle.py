@@ -2,6 +2,7 @@
     Initial version by ChatGPT & Gemini
     Edited by Uisang Hwang
 '''
+import re
 import math
 from pathlib import Path
 import libvgl as vgl
@@ -127,6 +128,7 @@ turtle_colors = {
 
     # Blues
     "blue": vgl.Color(0, 0, 255),
+    "lightblue": vgl.Color(173, 216, 230),
     "darkblue": vgl.Color(0, 0, 139),
     "mediumblue": vgl.Color(0, 0, 205),
     "navy": vgl.Color(0, 0, 128),
@@ -388,22 +390,24 @@ class Turtle:
     # hexgram'       : '*6'
     # plus'          : '+'
     # cross'         : 'x'
-    def get_color(c):
+    def get_color(self, c):
         if isinstance(c, str):
-            _c = turtle_colors[c]
+            _c = turtle_colors.get(c, None)
             if _c is not None:
                 return _c
             else:
-                _c = vgl.default_color[args[0].lower()]
+                _c = vgl.default_color.get(c.lower(), None)
                 if _c is not None:
                     return _c
+                elif re.match(r'^[\?]', c):
+                    return None
                 else:
                     print("Error: invalid color. Back color returns")
                     return vgl.BLACK
         elif isinstance(c, vgl.Color):
             return c
         elif isinstance(c, tuple):
-            return vgl.Color(c[0],c[1],c[2])
+            return vgl.Color(int(c[0]),int(c[1]),int(c[2]))
         else:
             print("Error: invalid color. Back color returns")
             return vgl.BLACK
@@ -415,10 +419,12 @@ class Turtle:
         _l_pat = vgl.linepat._PAT_SOLID
         
         if lcol is not None:
-            _p_col = self.get_color(lcol)
+            #_p_col = self.get_color(lcol)
+            _p_col = lcol
             
         if fcol is not None:
-            _f_col = self.get_color(fcol)
+            #_f_col = self.get_color(fcol)
+            _f_col = fcol
             
         if lthk is not None:
             _p_thk = float(lthk)
@@ -430,15 +436,50 @@ class Turtle:
                          _f_col)
     sym = symbol
     
-    def forward(self, distance):
+    def _new_pos(self, distance):
         """Move the turtle forward by the specified distance."""
         angle_rad = self._degrees_to_radians(self._heading)
         new_x = self._x + distance * math.cos(angle_rad)
         new_y = self._y + distance * math.sin(angle_rad)
+
+        return new_x, new_y
         
+    def forward(self, distance):
+        new_x, new_y = self._new_pos(distance)
         self._move_to(new_x, new_y)
 
     fd = forward
+    
+    def _arrow(self, distance, style, size=0.02, lcol=None, lthk=None, move=False):
+        cur_x, cur_y = self._x, self._y
+        new_x, new_y = self._new_pos(distance)
+        
+        a_lcol = self._pencolor
+        a_lthk = self._pensize
+        a_fcol = self._fillcolor
+        a_lpat = vgl.linepat._PAT_SOLID
+        
+        if lcol is not None:
+            a_lcol = lcol
+            
+        if lthk is not None:
+            a_lthk = lthk
+            
+        self._dev.arrow(cur_x, cur_y, new_x, new_y, 
+                        style, size, a_lcol, a_lthk, a_lpat, a_fcol)
+                        
+        if move:
+            self._x = new_x
+            self._y = new_y
+                        
+    def arrow(self, distance, style, size=0.02, lcol=None, lthk=None, move=False):
+        self._arrow(distance, style, size, lcol, lthk, move)
+        
+    def arrowf(self, distance, style, size=0.02, lcol=None, lthk=None, move=True):
+        self._arrow(distance, style, size, lcol, lthk, move)
+        
+    ar = arrow
+    arf= arrowf
     
     def backward(self, distance):
         """Move the turtle backward by the specified distance."""
@@ -717,7 +758,56 @@ class Turtle:
                              fcol=self._fillcolor)
         self._filling = False
         self._fill_coords = []
+        
+    # https://github.com/python/cpython/blob/3.13/Lib/turtle.py 
+    def color(self, *args):
+        """Return or set the pencolor and fillcolor.
 
+        Arguments:
+        Several input formats are allowed.
+        They use 0, 1, 2, or 3 arguments as follows:
+
+        color()
+            Return the current pencolor and the current fillcolor
+            as a pair of color specification strings as are returned
+            by pencolor and fillcolor.
+        color(colorstring), color((r,g,b)), color(r,g,b)
+            inputs as in pencolor, set both, fillcolor and pencolor,
+            to the given value.
+        color(colorstring1, colorstring2),
+        color((r1,g1,b1), (r2,g2,b2))
+            equivalent to pencolor(colorstring1) and fillcolor(colorstring2)
+            and analogously, if the other input format is used.
+
+        If turtleshape is a polygon, outline and interior of that polygon
+        is drawn with the newly set colors.
+        For more info see: pencolor, fillcolor
+
+        Example (for a Turtle instance named turtle):
+        >>> turtle.color('red', 'green')
+        >>> turtle.color()
+        ('red', 'green')
+        >>> colormode(255)
+        >>> color((40, 80, 120), (160, 200, 240))
+        >>> color()
+        ('#285078', '#a0c8f0')
+        """
+        if args:
+            l = len(args)
+            if l == 1:
+                pcolor = fcolor = self.get_color(args[0])
+            elif l == 2:
+                pcolor = self.get_color(args[0])
+                fcolor = self.get_color(args[1])
+            elif l > 2:
+                #pcolor = fcolor = args
+                print("Error: invalid color")
+                return
+            self._pencolor = pcolor
+            self._fillcolor = fcolor
+        else:
+            return str(self._pencolor), str(self._fillcolor)
+            
     def screen_size(self, xmin, xmax, ymin, ymax):
         """
         Sets the coordinate system of the drawing area.
@@ -752,6 +842,7 @@ _default_turtle = Turtle("turtle.jpg")
 # This makes it behave like the standard turtle module.
 backward    = _default_turtle.backward
 bk          = _default_turtle.bk
+color       = _default_turtle.color
 device      = _default_turtle.device
 forward     = _default_turtle.forward
 fd          = _default_turtle.fd
@@ -791,6 +882,9 @@ begin_poly  = _default_turtle.begin_poly
 end_poly    = _default_turtle.end_poly
 screen_size = _default_turtle.screen_size
 subplot     = _default_turtle.subplot
+arrow       = _default_turtle.arrow
+arrowf      = _default_turtle.arrowf
+ar          = _default_turtle.ar
 
 # Also expose the close method
 close = _default_turtle.close
