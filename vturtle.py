@@ -31,188 +31,8 @@ import libvgl as vgl
 # we'll represent it as strings in the dictionary first, and you can convert to actual objects
 # if you implement the vgl.Color class.
 
-turtle_colors = {
-    # Basic colors
-    "black": vgl.Color(0, 0, 0),
-    "white": vgl.Color(255, 255, 255),
-    "gray": vgl.Color(128, 128, 128),
-    "darkgray": vgl.Color(169, 169, 169),
-    "lightgray": vgl.Color(211, 211, 211),
-    "silver": vgl.Color(192, 192, 192),
-    "dimgray": vgl.Color(105, 105, 105),
-
-    # Reds
-    "red": vgl.Color(255, 0, 0),
-    "darkred": vgl.Color(139, 0, 0),
-    "lightcoral": vgl.Color(240, 128, 128),
-    "indianred": vgl.Color(205, 92, 92),
-    "crimson": vgl.Color(220, 20, 60),
-    "firebrick": vgl.Color(178, 34, 34),
-    "maroon": vgl.Color(128, 0, 0),
-    "salmon": vgl.Color(250, 128, 114),
-    "darksalmon": vgl.Color(233, 150, 122),
-    "lightsalmon": vgl.Color(255, 160, 122),
-    "orangered": vgl.Color(255, 69, 0),
-    "tomato": vgl.Color(255, 99, 71),
-
-    # Pinks
-    "pink": vgl.Color(255, 192, 203),
-    "deeppink": vgl.Color(255, 20, 147),
-    "hotpink": vgl.Color(255, 105, 180),
-    "lightpink": vgl.Color(255, 182, 193),
-    "palevioletred": vgl.Color(219, 112, 147),
-    "mediumvioletred": vgl.Color(199, 21, 133),
-
-    # Oranges
-    "orange": vgl.Color(255, 165, 0),
-    "darkorange": vgl.Color(255, 140, 0),
-    "coral": vgl.Color(255, 127, 80),
-
-    # Yellows
-    "yellow": vgl.Color(255, 255, 0),
-    "gold": vgl.Color(255, 215, 0),
-    "lightyellow": vgl.Color(255, 255, 224),
-    "lemonchiffon": vgl.Color(255, 250, 205),
-    "palegoldenrod": vgl.Color(238, 232, 170),
-    "khaki": vgl.Color(240, 230, 140),
-    "darkkhaki": vgl.Color(189, 183, 107),
-    "goldenrod": vgl.Color(218, 165, 32),
-    "darkgoldenrod": vgl.Color(184, 134, 11),
-
-    # Browns
-    "brown": vgl.Color(165, 42, 42),
-    "saddlebrown": vgl.Color(139, 69, 19),
-    "sienna": vgl.Color(160, 82, 45),
-    "chocolate": vgl.Color(210, 105, 30),
-    "peru": vgl.Color(205, 133, 63),
-    "tan": vgl.Color(210, 180, 140),
-    "burlywood": vgl.Color(222, 184, 135),
-    "wheat": vgl.Color(245, 222, 179),
-    "sandybrown": vgl.Color(244, 164, 96),
-
-    # Greens
-    "green": vgl.Color(0, 128, 0),
-    "darkgreen": vgl.Color(0, 100, 0),
-    "lightgreen": vgl.Color(144, 238, 144),
-    "limegreen": vgl.Color(50, 205, 50),
-    "forestgreen": vgl.Color(34, 139, 34),
-    "seagreen": vgl.Color(46, 139, 87),
-    "mediumseagreen": vgl.Color(60, 179, 113),
-    "darkseagreen": vgl.Color(143, 188, 143),
-    "palegreen": vgl.Color(152, 251, 152),
-    "springgreen": vgl.Color(0, 255, 127),
-    "lightspringgreen": vgl.Color(0, 250, 154),
-    "mediumspringgreen": vgl.Color(0, 250, 154), # Alias
-    "chartreuse": vgl.Color(127, 255, 0),
-    "lawngreen": vgl.Color(124, 252, 0),
-    "olivedrab": vgl.Color(107, 142, 35),
-    "darkolivegreen": vgl.Color(85, 107, 47),
-    "yellowgreen": vgl.Color(154, 205, 50),
-    "honeydew": vgl.Color(240, 255, 240),
-    "mintcream": vgl.Color(245, 255, 250),
-
-    # Cyans/Teals
-    "cyan": vgl.Color(0, 255, 255),
-    "aqua": vgl.Color(0, 255, 255), # Alias for cyan
-    "lightcyan": vgl.Color(224, 255, 255),
-    "paleturquoise": vgl.Color(175, 238, 238),
-    "turquoise": vgl.Color(64, 224, 208),
-    "mediumturquoise": vgl.Color(72, 209, 204),
-    "darkturquoise": vgl.Color(0, 206, 209),
-    "aquamarine": vgl.Color(127, 255, 212),
-    "mediumaquamarine": vgl.Color(102, 205, 170),
-    "teal": vgl.Color(0, 128, 128),
-    "darkslategray": vgl.Color(47, 79, 79),
-    "lightslategray": vgl.Color(119, 136, 153),
-    "slategray": vgl.Color(112, 128, 144),
-
-    # Blues
-    "blue": vgl.Color(0, 0, 255),
-    "lightblue": vgl.Color(173, 216, 230),
-    "darkblue": vgl.Color(0, 0, 139),
-    "mediumblue": vgl.Color(0, 0, 205),
-    "navy": vgl.Color(0, 0, 128),
-    "royalblue": vgl.Color(65, 105, 225),
-    "cornflowerblue": vgl.Color(100, 149, 237),
-    "steelblue": vgl.Color(70, 130, 180),
-    "lightsteelblue": vgl.Color(176, 196, 222),
-    "dodgerblue": vgl.Color(30, 144, 255),
-    "deepskyblue": vgl.Color(0, 191, 255),
-    "skyblue": vgl.Color(135, 206, 235),
-    "lightskyblue": vgl.Color(135, 206, 250),
-    "powderblue": vgl.Color(176, 224, 230),
-    "cadetblue": vgl.Color(95, 158, 160),
-    "aliceblue": vgl.Color(240, 248, 255),
-    "ghostwhite": vgl.Color(248, 248, 255),
-    "lavender": vgl.Color(230, 230, 250),
-    "midnightblue": vgl.Color(25, 25, 112),
-
-    # Purples
-    "purple": vgl.Color(128, 0, 128),
-    "darkmagenta": vgl.Color(139, 0, 139),
-    "mediumorchid": vgl.Color(186, 85, 211),
-    "darkorchid": vgl.Color(153, 50, 204),
-    "blueviolet": vgl.Color(138, 43, 226),
-    "darkviolet": vgl.Color(148, 0, 211),
-    "mediumpurple": vgl.Color(147, 112, 219),
-    "rebeccapurple": vgl.Color(102, 51, 153),
-    "thistle": vgl.Color(216, 191, 216),
-    "plum": vgl.Color(221, 160, 221),
-    "violet": vgl.Color(238, 130, 238),
-    "orchid": vgl.Color(218, 112, 214),
-
-    # Other common colors (Greys and others)
-    "whitesmoke": vgl.Color(245, 245, 245),
-    "gainsboro": vgl.Color(220, 220, 220),
-    "antiquewhite": vgl.Color(250, 235, 215),
-    "bisque": vgl.Color(255, 228, 196),
-    "blanchedalmond": vgl.Color(255, 235, 205),
-    "floralwhite": vgl.Color(255, 250, 240),
-    "oldlace": vgl.Color(253, 245, 230),
-    "seashell": vgl.Color(255, 245, 238),
-    "snow": vgl.Color(255, 250, 250),
-    "azure": vgl.Color(240, 255, 255),
-    "mistyrose": vgl.Color(255, 228, 225),
-    "lavenderblush": vgl.Color(255, 240, 245),
-    "linen": vgl.Color(250, 240, 230),
-    "peachpuff": vgl.Color(255, 218, 185),
-    "papayawhip": vgl.Color(255, 239, 213),
-    "mocassin": vgl.Color(255, 228, 181),
-    "navajowhite": vgl.Color(255, 222, 173),
-    "cornsilk": vgl.Color(255, 248, 220),
-    "ivory": vgl.Color(255, 255, 240),
-    "lemonchiffon": vgl.Color(255, 250, 205), # Duplicated in previous list, keep for consistency
-    "beige": vgl.Color(245, 245, 220),
-    "lightgoldenrodyellow": vgl.Color(250, 250, 210),
-    "lightyellow": vgl.Color(255, 255, 224), # Duplicated
-    "olivedrab": vgl.Color(107, 142, 35), # Duplicated
-    "darkolivegreen": vgl.Color(85, 107, 47), # Duplicated
-    "mediumaquamarine": vgl.Color(102, 205, 170), # Duplicated
-    "darkseagreen": vgl.Color(143, 188, 143), # Duplicated
-    "mediumseagreen": vgl.Color(60, 179, 113), # Duplicated
-    "lightseagreen": vgl.Color(32, 178, 170),
-    "cadetblue": vgl.Color(95, 158, 160), # Duplicated
-    "darkcyan": vgl.Color(0, 139, 139),
-    "deepskyblue": vgl.Color(0, 191, 255), # Duplicated
-    "dodgerblue": vgl.Color(30, 144, 255), # Duplicated
-    "royalblue": vgl.Color(65, 105, 225), # Duplicated
-    "mediumslateblue": vgl.Color(123, 104, 238),
-    "slateblue": vgl.Color(106, 90, 205),
-    "darkslateblue": vgl.Color(72, 61, 139),
-    "mediumpurple": vgl.Color(147, 112, 219), # Duplicated
-    "darkorchid": vgl.Color(153, 50, 204), # Duplicated
-    "darkviolet": vgl.Color(148, 0, 211), # Duplicated
-    "darkblue": vgl.Color(0, 0, 139), # Duplicated
-    "darkred": vgl.Color(139, 0, 0), # Duplicated
-    "darkgreen": vgl.Color(0, 100, 0), # Duplicated
-    "darkorange": vgl.Color(255, 140, 0), # Duplicated
-    "darkgoldenrod": vgl.Color(184, 134, 11), # Duplicated
-    "darkkhaki": vgl.Color(189, 183, 107), # Duplicated
-    "darkturquoise": vgl.Color(0, 206, 209), # Duplicated
-    "darkslategray": vgl.Color(47, 79, 79), # Duplicated
-    "darkgrey": vgl.Color(169, 169, 169), # Alias for darkgray
-    "lightgrey": vgl.Color(211, 211, 211) # Alias for lightgray
-}
+_default_dpi = 300
+_default_pdir = "p"
 
 class Turtle:
     """
@@ -320,19 +140,24 @@ class Turtle:
         
     sp = subplot
     
-    def device(self, fname=None, dpi=300, pdir="p"):
+    def devptr(self):
+        return self._dev if self._dev else None
+    
+    def device(self, fname=None, dpi=None, pdir=None):
    
         # initial call
-        pdir_ = pdir.lower()
+        #pdir_ = pdir.lower()
         #
-        if not self._device_called:
-            self._device_called = True
-            self._device_dpi = dpi
-            self._device_pdir = pdir_
-        else:
-            dpi  = self._device_dpi
-            pdir = self._device_pdir
-            
+        #if not self._device_called:
+        #    self._device_called = True
+        #    self._device_dpi = dpi
+        #    self._device_pdir = pdir_
+        #else:
+        #    dpi  = self._device_dpi
+        #    pdir = self._device_pdir
+        dpi_ = _default_dpi if dpi is None else dpi
+        pdir_ = _default_pdir if pdir is None else pdir
+        
         if fname is not None:
             self._fname = fname
 
@@ -341,15 +166,15 @@ class Turtle:
             self._dev.close()
        
         if "jpg" in p or "png" in p:
-            self._dev = vgl.DeviceIMG(self._fname, self._fmm.get_gbbox(), dpi)
+            self._dev = vgl.DeviceIMG(self._fname, self._fmm.get_gbbox(), dpi_)
         elif "wmf" in p:
             self._dev = vgl.DeviceWMF(self._fname, self._fmm.get_gbbox())
         elif "emf" in p:
             self._dev = vgl.DeviceEMF(self._fname, self._fmm.get_gbbox())
         elif "svg" in p:
-            self._dev = vgl.DeviceSVG(self._fname, self._fmm.get_gbbox(), dpi)
+            self._dev = vgl.DeviceSVG(self._fname, self._fmm.get_gbbox(), dpi_)
         elif "pdf" in p:
-            self._dev = vgl.DevicePDF(self._fname, self._fmm.get_gbbox(), pdir=pdir)
+            self._dev = vgl.DevicePDF(self._fname, self._fmm.get_gbbox(), pdir=pdir_)
         elif "pptx" in p:
             self._dev = vgl.DevicePPT(self._fname, self._fmm.get_gbbox())
         else:
@@ -357,6 +182,7 @@ class Turtle:
             return
             
         self._dev.set_device(self._frames[0])
+        return self._dev
 
     def _degrees_to_radians(self, degrees):
         return math.radians(degrees)
@@ -428,7 +254,7 @@ class Turtle:
             
         if lthk is not None:
             _p_thk = float(lthk)
-            
+        
         self._dev.symbol(self._x, self._y, sid, size, deg, 
                          _p_col, 
                          _p_thk, 
@@ -450,7 +276,7 @@ class Turtle:
 
     fd = forward
     
-    def _arrow(self, distance, style, size=0.02, lcol=None, lthk=None, move=False):
+    def _arrow(self, distance, style, size=0.02, lcol=None, lthk=None, fcol=None, move=False):
         cur_x, cur_y = self._x, self._y
         new_x, new_y = self._new_pos(distance)
         
@@ -465,18 +291,23 @@ class Turtle:
         if lthk is not None:
             a_lthk = lthk
             
-        self._dev.arrow(cur_x, cur_y, new_x, new_y, 
-                        style, size, a_lcol, a_lthk, a_lpat, a_fcol)
-                        
+        if fcol is not None:
+            a_fcol = fcol
+            
+        vgl.drawarrow.draw_arrow(self._dev, 
+                       cur_x, cur_y, new_x, new_y, 
+                       style, size, a_lcol, a_lthk, a_lpat, a_fcol, 
+                       color_table=None)
+                
         if move:
             self._x = new_x
             self._y = new_y
                         
-    def arrow(self, distance, style, size=0.02, lcol=None, lthk=None, move=False):
-        self._arrow(distance, style, size, lcol, lthk, move)
+    def arrow(self, distance, style, size=0.02, lcol=None, lthk=None, fcol=None):
+        self._arrow(distance, style, size, lcol, lthk, fcol, False)
         
-    def arrowf(self, distance, style, size=0.02, lcol=None, lthk=None, move=True):
-        self._arrow(distance, style, size, lcol, lthk, move)
+    def arrowf(self, distance, style, size=0.02, lcol=None, lthk=None, fcol=None):
+        self._arrow(distance, style, size, lcol, lthk, fcol, True)
         
     ar = arrow
     arf= arrowf
@@ -527,7 +358,7 @@ class Turtle:
             try:
                 #self._pencolor = getattr(color, args[0].upper())
                 #self._pencolor = vgl.default_color[args[0].lower()]
-                self._pencolor = turtle_colors[args[0].lower()]
+                self._pencolor = vgl.colordict.turtle_colors[args[0].lower()]
             except AttributeError:
                 print(f"Warning: Color '{args[0]}' not found. Using current color.")
                 self._pencolor = vgl.default_color['w']
@@ -630,7 +461,7 @@ class Turtle:
         """Set the turtle’s second coordinate to y."""
         self.setpos(self._x, y)
 
-    def circle(self, radius, extent=360, steps=None):
+    def circle(self, radius, cx=None, cy=None, extent=360, steps=None):
         """
         Draw a circle with the given radius.
         The center is radius units left of the turtle (if radius > 0)
@@ -656,9 +487,12 @@ class Turtle:
         # and heading. If radius > 0, the center is "left" of the turtle.
         # A 0-degree heading means facing right (East).
         # To find the center: rotate -90 degrees from current heading, then move radius distance.
-        center_angle_rad = self._degrees_to_radians(self._heading + 90 if radius > 0 else self._heading - 90)
-        center_x = self._x + abs(radius) * math.cos(center_angle_rad)
-        center_y = self._y + abs(radius) * math.sin(center_angle_rad)
+        if cx is not None and cy is not None:
+            center_x, center_y = cx, cy
+        else:
+            center_angle_rad = self._degrees_to_radians(self._heading + 90 if radius > 0 else self._heading - 90)
+            center_x = self._x + abs(radius) * math.cos(center_angle_rad)
+            center_y = self._y + abs(radius) * math.sin(center_angle_rad)
 
         # libvgl's circle draws a full circle from center and radius.
         # It doesn't support 'extent' or 'steps' directly for drawing segments.
@@ -704,7 +538,7 @@ class Turtle:
         elif isinstance(args[0], str):
             try:
                 #self._fillcolor = getattr(color, args[0].upper())
-                self._fillcolor = turtle_colors[args[0].lower()]
+                self._fillcolor = vgl.colordict.turtle_colors[args[0].lower()]
             except AttributeError:
                 print(f"Warning: Color '{args[0]}' not found. Using current fill color.")
         elif isinstance(args[0], vgl.Color):
@@ -885,6 +719,8 @@ subplot     = _default_turtle.subplot
 arrow       = _default_turtle.arrow
 arrowf      = _default_turtle.arrowf
 ar          = _default_turtle.ar
+arf         = _default_turtle.arf
+devptr      = _default_turtle.devptr
 
 # Also expose the close method
 close = _default_turtle.close
