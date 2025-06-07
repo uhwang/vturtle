@@ -660,7 +660,7 @@ class Turtle:
                                                # If not, the most robust way to change screen size
                                                # is to create a new frame and possibly a new device.
     def close(self):
-        if self._dev: 
+        if self._dev is not None: 
             self._dev.close()
 
 
